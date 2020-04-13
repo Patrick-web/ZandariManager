@@ -1,28 +1,56 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <img @click="showHome" src="@/assets/logo.svg" alt="" id="logo">
+    <pathCreator/>
+    <home/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import home from './components/home.vue'
+import pathCreator from '@/components/pathCreator.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    home,
+    pathCreator
+  },
+  methods:{
+    showHome(){
+        const home = document.querySelector('.home');
+        home.style.display = 'flex'
+        home.style.transform = 'scale(1)'
+        home.style.top = '0%';
+        this.centerLogo();
+    },
+    centerLogo(){
+      document.querySelector('#logo').style.left="50%"
+      document.querySelector('#logo').style.top="0px"
+      document.querySelector('#logo').style.width="10%"
+
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+*{
+  margin: 0;
+  padding:0;
+  box-sizing: border-box;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+body{
+  background: #000019;
+}
+#logo{
+  position: fixed;
+  top:0px;
+  left:50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: 10%;
+  transition: 0.2s ease;
 }
 </style>
