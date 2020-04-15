@@ -49,9 +49,9 @@ export default {
       },1000)
     },
     moveLogo(){
-      document.querySelector('#logo').style.left="5%"
+      document.querySelector('#logo').style.left="3%"
       document.querySelector('#logo').style.top="10px"
-      document.querySelector('#logo').style.width="8%"
+      document.querySelector('#logo').style.width="5%"
     }
   }
 }
