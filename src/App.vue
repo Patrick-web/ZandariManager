@@ -1,20 +1,23 @@
 <template>
   <div id="app">
     <img @click="showHome" src="@/assets/logo.svg" alt="" id="logo">
-    <pathCreator/>
+    <!-- <pathCreator/> -->
+    <categoryCreator/>
     <home/>
   </div>
 </template>
 
 <script>
-import home from './components/home.vue'
+import home from '@/components/home.vue'
 import pathCreator from '@/components/pathCreator.vue'
+import categoryCreator from '@/components/categoryCreator.vue'
 
 export default {
   name: 'App',
   components: {
     home,
-    pathCreator
+    pathCreator,
+    categoryCreator
   },
   methods:{
     showHome(){

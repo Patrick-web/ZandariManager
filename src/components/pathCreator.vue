@@ -79,7 +79,7 @@
 export default {
     methods:{
         notify(notification,color,timeout){
-            document.querySelector('.notification').innerHTML = `${notification}`
+            document.querySelector('.notification').insertAdjacentHTML('afterbegin',`${notification}`)
             document.querySelector('.notification').style.background = `${color}`;
             this.showNotification(timeout);    
         },
@@ -96,9 +96,11 @@ export default {
             pointsContainer.querySelector('input').value = '';   
         },
         showActions(e){
-            if(document.querySelector('.activeItem')){
-                document.querySelector('.activeItem').classList.add('item')
-                document.querySelector('.activeItem').classList.remove('activeItem')
+            const pointsContainer = document.querySelector('.pointsContainer')
+
+            if(pointsContainer.querySelector('.activeItem')){
+                pointsContainer.querySelector('.activeItem').classList.add('item')
+                pointsContainer.querySelector('.activeItem').classList.remove('activeItem')
             }
             e.currentTarget.classList.toggle('activeItem')
             e.currentTarget.classList.toggle('item')
@@ -122,23 +124,36 @@ export default {
                 this.reset();
             }
         },
-        saveEdit(){
-            this.generated.studyPoints[this.targetPointIndex].point = document.querySelector('input').value;
-            this.reset();
-            this.notify('Changes Saved','#06AC61',1500)
-        },
-        confirmDelete(index){
-            this.targetPointIndex = index;
-            this.showNotification()
-        },
-        deleteStudyPoint(){
-            this.generated.studyPoints.splice(this.targetPointIndex,1);
-            this.hideNotification()
-        },
         toggleEditMode(index,point){
             this.targetPointIndex = index;
             document.querySelector('.pointsContainer').classList.add('editMode')
             document.querySelector('#pointEntry').value = point
+        },
+        saveEdit(){
+            this.generated.studyPoints[this.targetPointIndex].point = document.querySelector('input').value;
+            this.reset();
+            document.querySelector('.confirmer').style.display = "none";
+            const prompt = document.querySelector('#prompt');
+                if(prompt){
+                    document.querySelector('.notification').removeChild(prompt)
+                }
+            this.notify('<p id="saveSucess">Changes Saved</p>','#06AC61',1500)
+        },
+        confirmDelete(index){
+            this.targetPointIndex = index;
+            document.querySelector('.notification').style.background = 'orange'
+
+            const prompt = document.querySelector('#prompt');
+                if(prompt){
+                    document.querySelector('.notification').removeChild(prompt)
+                }
+            document.querySelector('.confirmer').style.display = 'flex'
+            this.showNotification()
+
+        },
+        deleteStudyPoint(){
+            this.generated.studyPoints.splice(this.targetPointIndex,1);
+            this.hideNotification()
         },
         selectCategory(e,index,category){
             if(document.querySelector('.activeItem')){
@@ -213,7 +228,14 @@ export default {
         },
         saveProgress(){
             if(this.generated.hasIntros == null || this.generated.hasProjects == null || this.generated.hasFramework == null){
-                this.notify('<p>Please answer All questions</p>','rgb(255, 0, 106)',1500)
+                const prompt = document.querySelector('#prompt');
+                if(prompt){
+                    document.querySelector('.notification').removeChild(prompt)
+                }
+                this.notify('<p id="prompt">Please answer All questions</p>','rgb(255, 0, 106)',1500)
+
+
+                document.querySelector('.confirmer').style.display = 'none';
             }else{
                 document.querySelector('.pointsContainer').style.top="0%";
                 document.querySelector('.selector').style.top="-100%";
@@ -229,12 +251,23 @@ export default {
             if(timeout){
                 setTimeout(()=>{
                     document.querySelector('.notification').classList.remove('notify');
+                    document.querySelector('.confirmer').style.display = "none"
+                    const saveSucess = document.querySelector('#saveSucess');
+                    const prompt = document.querySelector('#saveSucess');
+                    if(saveSucess){
+                        document.querySelector('.notification').removeChild(saveSucess)
+                        document.querySelector('.confirmer').style.display = 'flex'
+                    }
+                    if(prompt){
+                        document.querySelector('.notification').removeChild(prompt)
+                        document.querySelector('.confirmer').style.display = 'flex'
+                    }
                 },timeout)
             }
         },
         hideNotification(){
             document.querySelector('.notification').classList.remove('notify');
-            this.reset()
+            // this.reset()
         }
     },
 components:{
@@ -673,8 +706,7 @@ input{
     position: absolute;
     right: 10px;
     top:10px;
-    width: 60px;
-    padding: 10px;
+    width: 50px;
 }
 #back:hover{
     animation: hop;

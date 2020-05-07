@@ -63,9 +63,11 @@ export default {
   width: 100%;
   display: flex;
   top:0%;
+  bottom: 0%;
   height: 100vh;
   transition: 0.2s top;
   z-index: 3;
+  overflow: hidden;
 }
 .home img{
   width: 100px;
